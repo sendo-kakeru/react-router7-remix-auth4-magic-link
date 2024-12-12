@@ -5,8 +5,10 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useHref,
+  useNavigate,
 } from "react-router";
-
+import { NextUIProvider } from "@nextui-org/react";
 import type { Route } from "./+types/root";
 import stylesheet from "./styles/app.css?url";
 import type React from "react";
@@ -26,6 +28,7 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
   return (
     <html lang="en">
       <head>
@@ -35,9 +38,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <div className="flex flex-col items-center justify-center gap-4 mx-auto w-full max-w-[1040px] px-4 h-svh">
+        <NextUIProvider navigate={navigate} useHref={useHref}>
           {children}
-        </div>
+        </NextUIProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -46,7 +49,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 mx-auto w-full max-w-[1040px] px-4 h-svh">
+      <Outlet />
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
