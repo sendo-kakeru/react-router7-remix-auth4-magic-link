@@ -6,7 +6,7 @@ import { sessionStorage } from "~/features/auth/session-storage.server";
 export async function action({ request }: LoaderFunctionArgs) {
   try {
     return sendToken.send(request, sessionStorage, {
-      successRedirect: "/login",
+      redirect: "/login",
     });
   } catch (error) {
     console.error("メールの送信に失敗しました", error);

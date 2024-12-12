@@ -6,7 +6,7 @@ export type VerifyEmailFunction = {
   (email: string): Promise<string>;
 };
 export type SendOptions = {
-  successRedirect: string;
+  redirect: string;
 };
 export type SendEmailOptions = {
   email: string;
@@ -82,7 +82,7 @@ export class SendToken {
     session.set(this.sessionMagicLinkKey, await this.encrypt(magicLink));
     session.set(this.sessionEmailKey, email);
 
-    return redirect(options.successRedirect, {
+    return redirect(options.redirect, {
       headers: {
         "Set-Cookie": await sessionStorage.commitSession(session),
       },
