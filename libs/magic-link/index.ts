@@ -1,9 +1,5 @@
 import type { User } from "@prisma/client";
-import {
-  SendToken,
-  type SendEmailFunction,
-  type VerifyEmailFunction,
-} from "./src/sendToken";
+import { SendToken, type SendEmailFunction, type VerifyEmailFunction } from "./src/sendToken";
 import { EmailLinkStrategy } from "./src/strategy";
 import type { Strategy } from "remix-auth/strategy";
 
@@ -39,7 +35,7 @@ export function createMagicLinkInstances({
       linkExpirationTime,
       validateSessionMagicLink,
     },
-    verify
+    verify,
   );
   const sendToken = new SendToken({
     secret,

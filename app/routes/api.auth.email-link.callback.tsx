@@ -3,8 +3,8 @@ import { authenticator } from "~/features/auth/authenticator.server";
 import { sessionStorage } from "~/features/auth/session-storage.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await sessionStorage.getSession(request.headers.get("cookie"));
   try {
-    const session = await sessionStorage.getSession(request.headers.get("cookie"));
     const magicLink = session.get("auth:magiclink");
     const user = await authenticator.authenticate(
       "email-link",
@@ -24,6 +24,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error("ログインに失敗しました。", error);
-    return redirect("/login");
+    session.unset("auth:magiclink");
+    session.unset("auth:email");
+    return redirect("/login", {
+      headers: {
+        "Set-Cookie": await sessionStorage.commitSession(session),
+      },
+    });
   }
 }
