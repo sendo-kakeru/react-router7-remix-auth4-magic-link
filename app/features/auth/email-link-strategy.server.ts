@@ -1,6 +1,6 @@
 import { env } from "env.server";
 import prisma from "../prisma.server";
-import { getMagicLinkInstances } from "libs/magic-link";
+import { createMagicLinkInstances } from "libs/magic-link";
 import nodemailer from "nodemailer";
 
 export const transporter = nodemailer.createTransport({
@@ -13,7 +13,7 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-const { sendToken, emailLinkStrategy } = getMagicLinkInstances({
+const { sendToken, emailLinkStrategy } = createMagicLinkInstances({
   secret: env.CRYPTO_SECRET,
   sendEmail: async ({ email, magicLink }) => {
     transporter.sendMail({

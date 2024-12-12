@@ -7,7 +7,7 @@ import {
 import { EmailLinkStrategy } from "./src/strategy";
 import type { Strategy } from "remix-auth/strategy";
 
-export function getMagicLinkInstances({
+export function createMagicLinkInstances({
   secret = "",
   emailFieldKey,
   sendEmail,
