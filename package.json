@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.0.1",
+    "@react-router/fs-routes": "^7.0.2",
     "@react-router/node": "^7.0.2",
     "@react-router/serve": "^7.0.2",
     "crypto-js": "^4.2.0",

@@ -8,7 +8,8 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import stylesheet from "./app.css?url";
+import stylesheet from "./styles/app.css?url";
+import type React from "react";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -34,7 +35,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <div className="flex flex-col items-center justify-center gap-4 mx-auto w-full max-w-[1040px] px-4 h-svh">
+          {children}
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -54,9 +57,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
     details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
+      error.status === 404 ? "The requested page could not be found." : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;
