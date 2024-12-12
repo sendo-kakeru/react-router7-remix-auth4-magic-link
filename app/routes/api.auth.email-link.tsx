@@ -9,14 +9,10 @@ export async function action({ request }: LoaderFunctionArgs) {
       successRedirect: "/login",
     });
   } catch (error) {
+    console.error("メールの送信に失敗しました", error);
     if (error instanceof v.ValiError) {
-      console.error(
-        "メールアドレスの形式が正しくありません",
-        "apps/app/routes/api.auth.email-link.tsx",
-        error,
-      );
-      throw redirect("/login");
+      console.error("メールアドレスの形式が正しくありません", error);
     }
-    throw error;
+    return redirect("/login");
   }
 }

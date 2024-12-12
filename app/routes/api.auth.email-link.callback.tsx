@@ -23,7 +23,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       },
     });
   } catch (error) {
-    console.error("ログインに失敗しました。", "app/routes/api.auth.email-link.callback.tsx", error);
-    throw redirect("/login");
+    console.error("ログインに失敗しました。", error);
+    return redirect("/login");
   }
 }
