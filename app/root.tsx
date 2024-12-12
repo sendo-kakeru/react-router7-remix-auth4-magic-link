@@ -1,5 +1,7 @@
 import {
+  Form,
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -7,11 +9,14 @@ import {
   ScrollRestoration,
   useHref,
   useNavigate,
+  type LoaderFunctionArgs,
 } from "react-router";
-import { NextUIProvider } from "@nextui-org/react";
+import { Button, Card, CardBody, NextUIProvider } from "@nextui-org/react";
 import type { Route } from "./+types/root";
 import stylesheet from "./styles/app.css?url";
 import type React from "react";
+import { sessionStorage } from "./features/auth/session-storage.server";
+import type { User } from "@prisma/client";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -26,6 +31,12 @@ export const links: Route.LinksFunction = () => [
   },
   { rel: "stylesheet", href: stylesheet },
 ];
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await sessionStorage.getSession(request.headers.get("cookie"));
+  const me: User = session.get("me");
+  return { me };
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
@@ -48,9 +59,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export default function App({ loaderData }: { loaderData: Awaited<ReturnType<typeof loader>> }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 mx-auto w-full max-w-[1040px] px-4 h-svh">
+    <div className="flex flex-col gap-4 items-center mx-auto w-full max-w-[800px] py-10 px-4 h-svh">
+      <Card className="w-full">
+        <CardBody className="items-center">
+          {loaderData.me ? (
+            <div className="flex items-center gap-8">
+              <p>
+                ようこそ <b className="text-xl">{loaderData.me.name}</b> さん
+              </p>
+              <Form action="/api/auth/logout" method="POST">
+                <Button type="submit" color="primary" radius="full" className="w-fit">
+                  ログアウト
+                </Button>
+              </Form>
+            </div>
+          ) : (
+            <Button color="primary" radius="full" to="/login" as={Link} className="w-fit">
+              ログイン
+            </Button>
+          )}
+        </CardBody>
+      </Card>
       <Outlet />
     </div>
   );
