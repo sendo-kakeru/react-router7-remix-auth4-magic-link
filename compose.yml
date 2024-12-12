@@ -10,17 +10,19 @@ services:
     restart: always
     networks:
       - dev
-  # app:
-  #   build:
-  #     context: ./
-  #     dockerfile: "Dockerfile"
-  #   restart: always
-  #   ports:
-  #     - 5173:5173
-  #   volumes:
-  #     - ./:/usr/server/
-  #     - /usr/server/node_modules
-  #   networks:
-  #     - dev
+  app:
+    build:
+      context: ./
+      dockerfile: "Dockerfile"
+    env_file:
+      - ./.env
+    restart: always
+    ports:
+      - 5173:5173
+    volumes:
+      - ./:/usr/server/
+      - /usr/server/node_modules
+    networks:
+      - dev
 networks:
   dev:

@@ -8,7 +8,7 @@ export const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: env.MAIL_GMAIL_ADDRESS,
+    user: env.MAIL_ADDRESS,
     pass: env.MAIL_PASSWORD,
   },
 });
@@ -17,7 +17,7 @@ const { sendToken, emailLinkStrategy } = getMagicLinkInstances({
   secret: env.CRYPTO_SECRET,
   sendEmail: async ({ email, magicLink }) => {
     transporter.sendMail({
-      from: `Auth <${env.MAIL_GMAIL_ADDRESS}>`,
+      from: `Auth <${env.MAIL_ADDRESS}>`,
       to: email,
       subject: "ログインメール",
       html: `
