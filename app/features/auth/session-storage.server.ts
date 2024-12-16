@@ -1,3 +1,4 @@
+import type { User } from "@prisma/client";
 import { createFileSessionStorage } from "@react-router/node";
 import { env } from "env.server";
 import { createCookie } from "react-router";
@@ -15,7 +16,11 @@ const sessionCookie = createCookie("auth_session", {
   secure: env.NODE_ENV === "production",
 });
 
-export const sessionStorage = createFileSessionStorage({
+export const sessionStorage = createFileSessionStorage<{
+  me: User,
+  'auth:magiclink':string,
+  'auth:email':string
+}>({
   cookie: sessionCookie,
   dir: "./sessions",
 });

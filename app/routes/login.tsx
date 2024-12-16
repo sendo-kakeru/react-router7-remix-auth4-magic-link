@@ -1,11 +1,10 @@
 import { sessionStorage } from "~/features/auth/session-storage.server";
 import { Form, Link as RRLink, type LoaderFunctionArgs } from "react-router";
-import type { User } from "@prisma/client";
 import { Button, Card, CardBody, CardHeader, Divider, Input, Link } from "@nextui-org/react";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const me: User = session.get("me");
+  const me = session.get("me");
   return { me, isMagicLinkSent: session.get("auth:magiclink") };
 }
 

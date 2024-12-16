@@ -25,3 +25,5 @@ generate:
 	@make module
 module:
 	docker cp react-router7-remix-auth4-magic-link-app-1:/usr/server/node_modules ./
+in:
+	${APP_CMD} bash

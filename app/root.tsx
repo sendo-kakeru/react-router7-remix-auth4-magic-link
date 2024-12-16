@@ -16,7 +16,6 @@ import type { Route } from "./+types/root";
 import stylesheet from "./styles/app.css?url";
 import type React from "react";
 import { sessionStorage } from "./features/auth/session-storage.server";
-import type { User } from "@prisma/client";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -34,7 +33,7 @@ export const links: Route.LinksFunction = () => [
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await sessionStorage.getSession(request.headers.get("cookie"));
-  const me: User = session.get("me");
+  const me = session.get("me");
   return { me };
 }
 
